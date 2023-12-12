@@ -22,7 +22,7 @@ namespace TestNews
         }
 
         [Test]
-        public async Task TestFetchTopIDs()
+        public async Task Test_Fetch_Top_IDs()
         {
             var res = await _service.GetTopStories();
             Assert.That(res, Is.Not.Null);
@@ -30,7 +30,7 @@ namespace TestNews
         }
 
         [Test]
-        public async Task TestId()
+        public async Task Test_Single_Id()
         {
             var res = await _service.GetTopStories();
             Assert.That(res, Is.Not.Null);
@@ -45,7 +45,7 @@ namespace TestNews
 
         [Test]
         [TestCase(100)]
-        public async Task TestGetBatchSerializeJson(int number)
+        public async Task Test_Get_Batch_Serialize_Json(int number)
         {
             var res = await _service.GetTopStories();
             Assert.That(res, Is.Not.Null);

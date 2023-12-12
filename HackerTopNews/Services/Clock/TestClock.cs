@@ -1,4 +1,4 @@
-﻿namespace HackerTopNews.Services
+﻿namespace HackerTopNews.Services.Clock
 {
     public class TestClock : IServiceClock
     {

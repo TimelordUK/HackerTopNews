@@ -1,5 +1,4 @@
-﻿using HackerTopNews.Services;
-using HackerTopNews;
+﻿using HackerTopNews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TestNews.Support;
+using HackerTopNews.Services.Cache;
+using HackerTopNews.Services.Clock;
 
 namespace TestNews
 {
     [TestFixture]
-    internal class NewStoryCacheTest
+    internal class NewsStoryCacheTest
     {
-        private INewStoryCache _newsCache;
+        private INewsStoryCache _newsCache;
         private IServiceClock _clock;
         private IHackerNewsService _newsService;
         private MoqHackerNewsService _moqHackerNewsService;
@@ -25,7 +26,7 @@ namespace TestNews
             var builder = TestAppBuilder.Make();
             builder.Services.AddSingleton(_moqHackerNewsService.GetMockedHackerNewsWebService()); 
             var s = builder.Build().Services;
-            _newsCache = s.GetRequiredService<INewStoryCache>();
+            _newsCache = s.GetRequiredService<INewsStoryCache>();
             _clock = s.GetRequiredService<IServiceClock>();
             _newsService = s.GetRequiredService<IHackerNewsService>();
         }

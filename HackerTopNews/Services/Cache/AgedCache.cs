@@ -1,9 +1,10 @@
 ﻿using HackerTopNews.Model;
+using HackerTopNews.Services.Clock;
 using System.Collections.Concurrent;
 
-namespace HackerTopNews.Services
+namespace HackerTopNews.Services.Cache
 {
-    public abstract class AgedCache<K, V> where V : class, new()
+    public abstract class AgedCache<K, V> where V : class
     {
         readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
         public int Count => _cachedItems.Count;
@@ -20,7 +21,7 @@ namespace HackerTopNews.Services
         }
 
         public abstract Task<V> Get(K id);
-        private struct CachedItem
+        public struct CachedItem
         {
             public DateTime StoredAt { get; }
             public V Item { get; }

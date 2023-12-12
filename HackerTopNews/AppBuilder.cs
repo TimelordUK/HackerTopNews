@@ -1,4 +1,5 @@
-﻿using HackerTopNews.Services;
+﻿using HackerTopNews.Services.Cache;
+using HackerTopNews.Services.Clock;
 
 namespace HackerTopNews
 {
@@ -15,7 +16,8 @@ namespace HackerTopNews
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient<IHackerNewsService, HackerNewsWebService>();
-            builder.Services.AddSingleton<INewStoryCache, NewStoryCache>();
+            builder.Services.AddSingleton<INewsStoryCache, NewsStoryCache>();
+            builder.Services.AddSingleton<ITopStoryCache, TopStoryCache>();
             return builder;
         }
 

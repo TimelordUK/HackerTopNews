@@ -25,7 +25,7 @@ namespace TestNews
             _service = moqHackerNewsService.GetMockedHackerNewsWebService();
         }
         [Test]
-        public async Task GetAllStories()
+        public async Task Get_All_Stories()
         {
             var all = await _service.GetTopStories();
             Assert.That(all, Is.Not.Null);
@@ -33,7 +33,7 @@ namespace TestNews
         }
 
         [Test]
-        public async Task GetFirstStory()
+        public async Task Get_First_Story()
         {
             Assert.That(moqHackerNewsService.GetInvocations(0), Is.EqualTo(0));
             var all = await _service.GetTopStories();
@@ -54,7 +54,7 @@ namespace TestNews
 
         // fetch all ids and then resolve all to receive list of stories
         [Test]
-        public async Task ResolveAll()
+        public async Task Resolve_All_Stories()
         {
             Assert.That(moqHackerNewsService.GetInvocations(0), Is.EqualTo(0));
             var ids = await _service.GetTopStories();

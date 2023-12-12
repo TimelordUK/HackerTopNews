@@ -1,5 +1,5 @@
 ﻿using HackerTopNews;
-using HackerTopNews.Services;
+using HackerTopNews.Services.Clock;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;

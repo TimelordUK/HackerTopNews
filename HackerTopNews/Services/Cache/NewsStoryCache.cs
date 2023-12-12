@@ -1,6 +1,7 @@
 ﻿using HackerTopNews.Model;
+using HackerTopNews.Services.Clock;
 
-namespace HackerTopNews.Services
+namespace HackerTopNews.Services.Cache
 {
     /*
      * A time expired cache of news stories where they can live in cache for a 
@@ -8,13 +9,13 @@ namespace HackerTopNews.Services
      * service is used to resolve the story.  When under load this will save
      * sending huge numbers of requests for the same data.
      */
-    public class NewStoryCache : AgedCache<int, HackerNewStory>, INewStoryCache
+    public class NewsStoryCache : AgedCache<int, HackerNewStory>, INewsStoryCache
     {
         private IHackerNewsService _hackerNewsWebService;
-        private ILogger<NewStoryCache> _logger;
+        private ILogger<NewsStoryCache> _logger;
 
 
-        public NewStoryCache(ILogger<NewStoryCache> logger, IServiceClock clock, IHackerNewsService hackerNewsWebService) : base(clock, TimeSpan.FromSeconds(60))
+        public NewsStoryCache(ILogger<NewsStoryCache> logger, IServiceClock clock, IHackerNewsService hackerNewsWebService) : base(clock, TimeSpan.FromSeconds(60))
         {
             _logger = logger;
             _hackerNewsWebService = hackerNewsWebService;

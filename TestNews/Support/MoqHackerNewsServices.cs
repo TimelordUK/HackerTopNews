@@ -13,7 +13,6 @@ namespace TestNews.Support
 {
     internal class MoqHackerNewsService
     {
-
         private IReadOnlyDictionary<int, HackerNewStory> IDToStory { get; set; }
         private Mock<IHackerNewsService> MockedNewsService { get; set; }
         private ConcurrentDictionary<int, int> _invocations = new ConcurrentDictionary<int, int>();

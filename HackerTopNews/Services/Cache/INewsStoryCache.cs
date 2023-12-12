@@ -1,8 +1,8 @@
 ﻿using HackerTopNews.Model;
 
-namespace HackerTopNews.Services
+namespace HackerTopNews.Services.Cache
 {
-    public interface INewStoryCache
+    public interface INewsStoryCache
     {
         Task<HackerNewStory> Get(int id);
         int Count { get; }

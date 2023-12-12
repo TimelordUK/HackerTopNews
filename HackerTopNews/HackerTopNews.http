@@ -3,3 +3,7 @@
 GET {{HackerTopNews_HostAddress}}/hackertopnews/
 Accept: application/json
 ###
+
+GET {{HackerTopNews_HostAddress}}/hackerapi/
+Accept: application/json
+###

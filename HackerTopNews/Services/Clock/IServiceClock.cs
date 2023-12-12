@@ -1,4 +1,4 @@
-﻿namespace HackerTopNews.Services
+﻿namespace HackerTopNews.Services.Clock
 {
     /// <summary>
     /// provides reference time inject either actual System time or a test clock 
