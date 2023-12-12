@@ -30,7 +30,7 @@ namespace TestNews
         }
 
         [Test]
-        public async Task TestCacheFetchIdsViaMoqService()
+        public async Task Test_Cache_Fetch_Ids_Via_MoqService()
         {
             Assert.That(_storyCache.Count, Is.EqualTo(0));
             var res = await _storyCache.Get();
@@ -38,7 +38,11 @@ namespace TestNews
             Assert.That(res.Count, Is.EqualTo(MockResponses.IDs.Count));
             Assert.That(_moqHackerNewsService.GetInvocations(0), Is.EqualTo(1));
         }
-
+       
+        /*
+         * given clock has not moved (test clock) tehn do not expect cache to be flused 
+         * and no additional call made to the web service.`
+         */
 
         [Test]
         public async Task Test_Cache_Fetch_No_Expire_Fetch()
@@ -54,6 +58,9 @@ namespace TestNews
             Assert.That(_moqHackerNewsService.GetInvocations(0), Is.EqualTo(1));
         }
 
+        /*
+         * move test clock to flush cache and hence expect another call on service 
+         */
         [Test]
         public async Task Test_Cache_Fetch_Expire_Fetch_MoqService()
         {
