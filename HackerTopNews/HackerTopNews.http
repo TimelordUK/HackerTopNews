@@ -1,0 +1,8 @@
+@HackerTopNews_HostAddress = http://localhost:5110
+
+GET {{HackerTopNews_HostAddress}}/weatherforecast/
+Accept: application/json
+###
+GET {{HackerTopNews_HostAddress}}/hackertopnews/
+Accept: application/json
+###
