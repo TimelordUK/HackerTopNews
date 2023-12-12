@@ -9,11 +9,11 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace TestNews
+namespace TestNews.Support
 {
     internal class MoqHackerNewsService
     {
-     
+
         private IReadOnlyDictionary<int, HackerNewStory> IDToStory { get; set; }
         private Mock<IHackerNewsService> MockedNewsService { get; set; }
         private ConcurrentDictionary<int, int> _invocations = new ConcurrentDictionary<int, int>();
@@ -43,7 +43,7 @@ namespace TestNews
                     _invocations.AddOrUpdate(i, 1, (key, old) => old + 1);
                     return Task.FromResult(story);
                 }
-              
+
                 throw new ArgumentOutOfRangeException($"id {i} unknown");
             });
             return MockedNewsService.Object;

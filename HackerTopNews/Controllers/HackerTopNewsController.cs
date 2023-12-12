@@ -20,10 +20,10 @@ namespace HackerTopNews.Controllers
         }
 
         [HttpGet(Name = "GetTopID")]
-        public async Task<IEnumerable<int>> Get()
+        public Task<IReadOnlyList<int>> Get()
         {
             _logger.LogInformation("Get");
-            return await _newsService.GetTopStories();
+            return _newsService.GetTopStories();
         }
 
         [HttpGet("{id}")]

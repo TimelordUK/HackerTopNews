@@ -1,10 +1,10 @@
 ﻿using HackerTopNews;
 using HackerTopNews.Controllers;
-using HackerTopNews.Model;
 using HackerTopNews.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Text.Json;
+using HackerTopNews.Model;
 
 public class HackerNewsWebService : IHackerNewsService
 {

@@ -7,7 +7,7 @@ namespace HackerTopNews.Services
     {
         readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
         public int Count => _cachedItems.Count;
-        IServiceClock _clock;
+        private IServiceClock _clock;
         private DateTime _lastCull;
         private object _lock = new object();
         private TimeSpan _itemLifeTime;
@@ -22,12 +22,21 @@ namespace HackerTopNews.Services
         public abstract Task<V> Get(K id);
         private struct CachedItem
         {
+            public DateTime StoredAt { get; }
+            public V Item { get; }
+            public CachedItem(V item, DateTime storedAt)
+            {
+                Item = item;
+                StoredAt = storedAt;
+            }
             public bool IsExpired(IServiceClock clock, TimeSpan timeSpan)
             {
                 return clock.CurrentTime - StoredAt > timeSpan;
             }
-            public DateTime StoredAt { get; set; }
-            public V Item { get; set; }
+            public override string ToString()
+            {
+                return $"CachedItem StoredAt = {StoredAt}, Item = [{Item}]";
+            }
         }
 
         private void Cull()
@@ -50,11 +59,7 @@ namespace HackerTopNews.Services
             if (!_cachedItems.TryGetValue(key, out var cachedItem))
             {
                 var v = await maker(key);
-                cachedItem = new CachedItem
-                {
-                    Item = v,
-                    StoredAt = _clock.CurrentTime
-                };
+                cachedItem = new CachedItem(v, _clock.CurrentTime);
                 _cachedItems[key] = cachedItem;
             }
             return cachedItem.Item;

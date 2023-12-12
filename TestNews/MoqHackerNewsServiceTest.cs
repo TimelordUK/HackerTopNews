@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestNews.Support;
 
 namespace TestNews
 {
@@ -28,7 +29,7 @@ namespace TestNews
         {
             var all = await _service.GetTopStories();
             Assert.That(all, Is.Not.Null);
-            Assert.That(all.Count, Is.EqualTo(10));
+            Assert.That(all.Count, Is.EqualTo(MockResponses.IDs.Count));
         }
 
         [Test]
