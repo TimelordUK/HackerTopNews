@@ -3,7 +3,7 @@ using HackerTopNews.Services.Clock;
 
 namespace HackerTopNews.Services.Cache
 {
-    public class TopStoryCache : AgedCache<int, IReadOnlyList<int>>, ITopStoryCache
+    internal class TopStoryCache : AgedCache<int, IReadOnlyList<int>>, ITopStoryCache
     {
         private IHackerNewsService _hackerNewsWebService;
         private ILogger<NewsStoryCache> _logger;
@@ -16,6 +16,7 @@ namespace HackerTopNews.Services.Cache
 
         public override Task<IReadOnlyList<int>> Get(int id)
         {
+            _logger.LogDebug($"TopStoryCache id = {id}");
             return GetOrAdd(id, _ =>
             {
                 return _hackerNewsWebService.GetTopStories();

@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 namespace HackerTopNews.Services.Cache
 {
-    public abstract class AgedCache<K, V> where V : class
+    internal abstract class AgedCache<K, V> where V : class
     {
         readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
         public int Count => _cachedItems.Count;
