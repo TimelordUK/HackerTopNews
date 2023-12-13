@@ -9,7 +9,7 @@ namespace HackerTopNews.Services.Cache
         readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
         public int Count => _cachedItems.Count;
         private IServiceClock _clock;
-        private DateTime _lastCull;
+        protected DateTime _lastCull;
         private object _lock = new object();
         private TimeSpan _itemLifeTime;
 
@@ -51,8 +51,14 @@ namespace HackerTopNews.Services.Cache
                     _cachedItems.TryRemove(item.Key, out _);
                 }
                 _lastCull = _clock.CurrentTime;
+                if (expired.Count > 0)
+                {
+                    OnCulled(expired.Count);
+                }
             }
         }
+
+        protected abstract void OnCulled(int items);
 
         public async Task<V> GetOrAdd(K key, Func<K, Task<V>> maker)
         {

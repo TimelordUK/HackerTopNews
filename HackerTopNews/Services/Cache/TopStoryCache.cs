@@ -27,5 +27,10 @@ namespace HackerTopNews.Services.Cache
         {
             return Get(0);
         }
+
+        protected override void OnCulled(int items)
+        {
+            _logger.LogInformation($"OnCulled lastcull = {_lastCull} culled cache items = {items} Count now = {Count}");
+        }
     }
 }

@@ -22,13 +22,13 @@ namespace HackerTopNews.Controllers
         [HttpGet(Name = "GetAll")]
         public Task<IReadOnlyList<int>> Get()
         {
-            _logger.LogInformation("Get");
             return _topStoryCache.Get();
         }
 
         [HttpGet("{id}")]
         public Task<HackerNewStory> Get(int id)
         {
+            _logger.LogInformation($"Get id {id}");
             return _newStoryCache.Get(id);
         }
     }

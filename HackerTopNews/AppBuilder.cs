@@ -1,4 +1,5 @@
-﻿using HackerTopNews.Services.Cache;
+﻿using HackerTopNews.Services;
+using HackerTopNews.Services.Cache;
 using HackerTopNews.Services.Clock;
 
 namespace HackerTopNews
@@ -18,6 +19,8 @@ namespace HackerTopNews
             builder.Services.AddHttpClient<IHackerNewsService, HackerNewsWebService>();
             builder.Services.AddSingleton<INewsStoryCache, NewsStoryCache>();
             builder.Services.AddSingleton<ITopStoryCache, TopStoryCache>();
+            builder.Services.AddSingleton<IScoreRankedNews, ScoreRankedNews>();
+          
             return builder;
         }
 

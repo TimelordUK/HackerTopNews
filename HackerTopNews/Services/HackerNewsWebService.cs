@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using HackerTopNews.Model;
+using Microsoft.Extensions.Logging;
 
 public class HackerNewsWebService : IHackerNewsService
 {
@@ -13,7 +14,7 @@ public class HackerNewsWebService : IHackerNewsService
     private readonly HttpClient _httpClient;
     private static readonly JsonSerializerOptions IgnoreCase = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     private readonly ILogger<HackerNewsWebService> _logger;
-    private ConcurrentDictionary<string, Task<HttpResponseMessage>> _responses = new ConcurrentDictionary<string, Task<HttpResponseMessage>>();
+    private readonly ConcurrentDictionary<string, Task<HttpResponseMessage>> _responses = new ConcurrentDictionary<string, Task<HttpResponseMessage>>();
 
     public HackerNewsWebService(ILogger<HackerNewsWebService> logger, HttpClient httpClient)
     {
@@ -45,7 +46,8 @@ public class HackerNewsWebService : IHackerNewsService
             if (jsonString != null)
             {
                 var story = JsonSerializer.Deserialize<HackerNewStory>(jsonString, IgnoreCase);
-                _logger.LogInformation($"response {jsonString} r = {story}");
+                _logger.LogInformation($"GetStory id = {id}, url = {url}, response len = {jsonString.Length}");
+                _logger.LogDebug($"GetStory id = {id}, url = ${url}, response = {jsonString}, r = {story}");
                 return story;
             }
         }
@@ -66,7 +68,8 @@ public class HackerNewsWebService : IHackerNewsService
             if (jsonString != null)
             {
                 var listInts = JsonSerializer.Deserialize<List<int>>(jsonString);
-                _logger.LogInformation($"response {jsonString}");
+                _logger.LogInformation($"GetTopStories url = {url}, response len = {jsonString.Length}, list len = {listInts.Count}");
+                _logger.LogDebug($"GetTopStories url = {url}, response = {jsonString}, list len = {listInts.Count}");
                 return listInts;
             }
         }

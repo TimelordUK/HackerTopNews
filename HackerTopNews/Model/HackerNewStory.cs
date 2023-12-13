@@ -1,5 +1,6 @@
 ﻿namespace HackerTopNews.Model
 {
+ 
     public class HackerNewStory
     {
         public string Url { get; set; }
