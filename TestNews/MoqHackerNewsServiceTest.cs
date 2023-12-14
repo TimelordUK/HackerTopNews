@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,9 @@ namespace TestNews
         [SetUp]
         public void Init()
         {
-            moqHackerNewsService = new MoqHackerNewsService();
-            _service = moqHackerNewsService.Service;
+            var builder = TestAppBuilder.MakeWithMoqService(out moqHackerNewsService);
+            var s = builder.Build().Services;
+            _service = s.GetRequiredService<IHackerNewsService>();
         }
         [Test]
         public async Task Test_Get_All_Stories()

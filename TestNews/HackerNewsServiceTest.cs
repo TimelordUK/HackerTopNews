@@ -55,7 +55,7 @@ namespace TestNews
             var json = JsonSerializer.Serialize(stories);
             Assert.That(json.Length, Is.GreaterThan(1));
         }
-
+        
         [Test]
         [TestCase(int.MinValue)]
         public void Test_Fetch_Unknown_Story(int id)

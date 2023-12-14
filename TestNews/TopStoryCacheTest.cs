@@ -21,9 +21,7 @@ namespace TestNews
         [SetUp]
         public void Setup()
         {
-            _moqHackerNewsService = new MoqHackerNewsService();
-            var builder = TestAppBuilder.Make();
-            builder.Services.AddSingleton(_moqHackerNewsService.Service); 
+            var builder = TestAppBuilder.MakeWithMoqService(out _moqHackerNewsService);
             var s = builder.Build().Services;
             _storyCache = s.GetRequiredService<ITopStoryCache>();
             _clock = s.GetRequiredService<IServiceClock>();

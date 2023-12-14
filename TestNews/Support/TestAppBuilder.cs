@@ -18,5 +18,13 @@ namespace TestNews.Support
             builder.Services.AddSingleton<IServiceClock, TestClock>();
             return builder;
         }
+
+        public static WebApplicationBuilder MakeWithMoqService(out MoqHackerNewsService moqHackerNewsService)
+        {
+            moqHackerNewsService = new MoqHackerNewsService();
+            var builder = Make();
+            builder.Services.AddSingleton(moqHackerNewsService.Service);
+            return builder; 
+        }
     }
 }
