@@ -32,7 +32,7 @@ namespace TestNews
         }
 
         [Test]
-        public async Task TestCacheFetchStoryViaMoqService()
+        public async Task Test_Cache_Fetch_Story_Via_Moq_Service()
         {
             Assert.That(_newsCache.Count, Is.EqualTo(0));
             var res = await _newsService.GetTopStories();
@@ -57,7 +57,7 @@ namespace TestNews
         // if the clock is moved forward then expect the cache to expire and another
         // call is made to the web service.
         [Test]
-        public async Task TestCacheExpiryViaMoqService()
+        public async Task Test_Cache_Expiry_Via_Moq_Service()
         {
             Assert.That(_newsCache.Count, Is.EqualTo(0));
             var res = await _newsService.GetTopStories();

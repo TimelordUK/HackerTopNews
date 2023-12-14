@@ -1,4 +1,5 @@
 ﻿using HackerTopNews.Model;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
 using System.Collections.Concurrent;
@@ -41,7 +42,7 @@ namespace TestNews.Support
                     return Task.FromResult(story);
                 }
 
-                throw new ArgumentOutOfRangeException($"id {i} unknown");
+                throw new BadHttpRequestException($"id {i} unknown");
             });
         }
     }

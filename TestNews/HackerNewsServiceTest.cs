@@ -1,8 +1,8 @@
 using HackerTopNews;
 using HackerTopNews.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using TestNews.Support;
 
@@ -54,6 +54,16 @@ namespace TestNews
             Assert.That(stories.Length, Is.EqualTo(number));
             var json = JsonSerializer.Serialize(stories);
             Assert.That(json.Length, Is.GreaterThan(1));
+        }
+
+        [Test]
+        [TestCase(int.MinValue)]
+        public void Test_Fetch_Unknown_Story(int id)
+        {
+            var exception = Assert.ThrowsAsync<BadHttpRequestException>(() =>
+            {
+                return _service.GetStory(id);
+            });
         }
     }
 }

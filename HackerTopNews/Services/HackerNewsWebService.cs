@@ -48,14 +48,17 @@ public class HackerNewsWebService : IHackerNewsService
                 var story = JsonSerializer.Deserialize<HackerNewStory>(jsonString, IgnoreCase);
                 _logger.LogInformation($"GetStory id = {id}, url = {url}, response len = {jsonString.Length}");
                 _logger.LogDebug($"GetStory id = {id}, url = ${url}, response = {jsonString}, r = {story}");
-                return story;
+                if (story != null)
+                {
+                    return story;
+                }
             }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "GetStory error " + ex.Message);
         }
-        return null;
+        throw new BadHttpRequestException($"Error fetching {id}");
     }
 
     public async Task<IReadOnlyList<int>> GetTopStories()
@@ -76,6 +79,7 @@ public class HackerNewsWebService : IHackerNewsService
         catch (Exception ex)
         {
             _logger.LogError(ex, "GetTopStoryID error " + ex.Message);
+            throw new BadHttpRequestException($"Error fetching top stories");
         }
         return new List<int>();
     }

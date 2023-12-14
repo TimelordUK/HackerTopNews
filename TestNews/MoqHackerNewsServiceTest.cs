@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Http;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace TestNews
             _service = moqHackerNewsService.Service;
         }
         [Test]
-        public async Task Get_All_Stories()
+        public async Task Test_Get_All_Stories()
         {
             var all = await _service.GetTopStories();
             Assert.That(all, Is.Not.Null);
@@ -33,7 +34,7 @@ namespace TestNews
         }
 
         [Test]
-        public async Task Get_First_Story()
+        public async Task Test_Get_First_Story()
         {
             Assert.That(moqHackerNewsService.GetInvocations(0), Is.EqualTo(0));
             var all = await _service.GetTopStories();
@@ -54,13 +55,23 @@ namespace TestNews
 
         // fetch all ids and then resolve all to receive list of stories
         [Test]
-        public async Task Resolve_All_Stories()
+        public async Task Test_Resolve_All_Stories()
         {
             Assert.That(moqHackerNewsService.GetInvocations(0), Is.EqualTo(0));
             var ids = await _service.GetTopStories();
             var allTasks = ids.Select(_service.GetStory).ToArray();
             var stories = await Task.WhenAll(allTasks);
             Assert.That(stories.Count, Is.EqualTo(MockResponses.IDs.Count));
+        }
+
+        [Test]
+        [TestCase(int.MinValue)]
+        public void Test_Fetch_Unknown_Story(int id)
+        {
+            var exception = Assert.ThrowsAsync<BadHttpRequestException>(() =>
+            {
+                return _service.GetStory(id);
+            });
         }
     }
 }
