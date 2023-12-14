@@ -24,6 +24,11 @@ namespace TestNews.Support
             return _invocations.TryGetValue(id, out var r) ? r : 0;
         }
 
+        public int GetInvocations()
+        {
+            return _invocations.Values.Sum();
+        }
+
         public MoqHackerNewsService()
         {
             IDToStory = MockResponses.Stories.ToDictionary(s => s.Id);
