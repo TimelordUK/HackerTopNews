@@ -4,6 +4,6 @@ namespace HackerTopNews.Services
 {
     public interface IScoreRankedNews
     {
-        Task<List<RankedNewsStory>> GetTopScoring(int n);
+        Task<IReadOnlyList<RankedNewsStory>> GetTopScoring(int n);
     }
 }

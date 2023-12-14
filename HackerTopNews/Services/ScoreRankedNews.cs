@@ -19,7 +19,7 @@ namespace HackerTopNews.Services
             _newStoryCache = newStoryCache;
         }
 
-        public async Task<List<RankedNewsStory>> GetTopScoring(int n)
+        public async Task<IReadOnlyList<RankedNewsStory>> GetTopScoring(int n)
         {
             var sw = new Stopwatch();
             sw.Start();

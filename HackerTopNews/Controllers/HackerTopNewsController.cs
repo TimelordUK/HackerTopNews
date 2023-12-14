@@ -20,7 +20,7 @@ namespace HackerTopNews.Controllers
         }
 
         [HttpGet("{n}")]
-        public Task<List<RankedNewsStory>> GetTopScoring(int n)
+        public Task<IReadOnlyList<RankedNewsStory>> GetTopScoring(int n)
         {
             _logger.LogInformation($"HackerTopNewsController.GetTopScoring n = {n}");
             var ranked = _scoreRankedNews.GetTopScoring(n);
