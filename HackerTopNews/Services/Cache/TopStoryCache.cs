@@ -8,11 +8,13 @@ namespace HackerTopNews.Services.Cache
         private IHackerNewsService _hackerNewsWebService;
         private ILogger<NewsStoryCache> _logger;
 
-        public TopStoryCache(ILogger<NewsStoryCache> logger, IServiceClock clock, IHackerNewsService hackerNewsWebService) : base(clock, TimeSpan.FromSeconds(20))
+        public TopStoryCache(ILogger<NewsStoryCache> logger, IServiceClock clock, IHackerNewsService hackerNewsWebService, IConfiguration configuration) : base(clock, configuration, "NewsCache:TopNewsExpireSeconds")
         {
             _logger = logger;
             _hackerNewsWebService = hackerNewsWebService;
+            _logger.LogInformation($"TopStoryCache expiry lifetime = {ItemLifeTime}");
         }
+
 
         public override Task<IReadOnlyList<int>> Get(int id)
         {

@@ -19,12 +19,28 @@ namespace HackerTopNews.Services.Cache
         protected DateTime _lastCull;
         private object _lock = new object();
         private TimeSpan _itemLifeTime;
+        public TimeSpan ItemLifeTime => _itemLifeTime;  
 
         protected AgedCache(IServiceClock clock, TimeSpan itemLifeTime)
         {
             _clock = clock;
             _lastCull = _clock.CurrentTime;
             _itemLifeTime = itemLifeTime;
+        }
+
+        protected AgedCache(IServiceClock clock, IConfiguration configuration, string key)
+        {
+            _clock = clock;
+            _lastCull = _clock.CurrentTime;
+            _itemLifeTime = GetExpire(configuration, key);
+        }
+
+        private static TimeSpan GetExpire(IConfiguration configuration, string key)
+        {
+            const int def = 60;
+            var v = configuration[key] ?? $"{def}";
+            var s = int.TryParse(v, out var expireSecs) ? expireSecs : def;
+            return TimeSpan.FromSeconds(s);
         }
 
         public abstract Task<V> Get(K id);

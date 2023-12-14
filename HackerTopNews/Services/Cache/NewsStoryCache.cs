@@ -1,5 +1,6 @@
 ﻿using HackerTopNews.Model;
 using HackerTopNews.Services.Clock;
+using Microsoft.Extensions.Configuration;
 
 namespace HackerTopNews.Services.Cache
 {
@@ -14,10 +15,10 @@ namespace HackerTopNews.Services.Cache
         private IHackerNewsService _hackerNewsWebService;
         private ILogger<NewsStoryCache> _logger;
 
-        public NewsStoryCache(ILogger<NewsStoryCache> logger, IServiceClock clock, IHackerNewsService hackerNewsWebService) : base(clock, TimeSpan.FromSeconds(60))
-        {
+        public NewsStoryCache(ILogger<NewsStoryCache> logger, IServiceClock clock, IHackerNewsService hackerNewsWebService, IConfiguration configuration) : base(clock, configuration, "NewsCache:NewsStoryExpireSeconds") {
             _logger = logger;
             _hackerNewsWebService = hackerNewsWebService;
+            _logger.LogInformation($"NewsStoryCache expiry lifetime = {ItemLifeTime}");
         }
 
         public override Task<HackerNewStory> Get(int id)
