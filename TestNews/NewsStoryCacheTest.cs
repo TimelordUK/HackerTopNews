@@ -12,7 +12,7 @@ using HackerTopNews.Services.Clock;
 namespace TestNews
 {
     [TestFixture]
-    internal class NewsStoryCacheTest
+    internal class NewStoryCacheTest
     {
         private INewsStoryCache _newsCache;
         private IServiceClock _clock;
@@ -24,7 +24,7 @@ namespace TestNews
         {
             _moqHackerNewsService = new MoqHackerNewsService();
             var builder = TestAppBuilder.Make();
-            builder.Services.AddSingleton(_moqHackerNewsService.GetMockedHackerNewsWebService()); 
+            builder.Services.AddSingleton(_moqHackerNewsService.Service); 
             var s = builder.Build().Services;
             _newsCache = s.GetRequiredService<INewsStoryCache>();
             _clock = s.GetRequiredService<IServiceClock>();

@@ -23,7 +23,7 @@ namespace TestNews
         {
             _moqHackerNewsService = new MoqHackerNewsService();
             var builder = TestAppBuilder.Make();
-            builder.Services.AddSingleton(_moqHackerNewsService.GetMockedHackerNewsWebService()); 
+            builder.Services.AddSingleton(_moqHackerNewsService.Service); 
             var s = builder.Build().Services;
             _storyCache = s.GetRequiredService<ITopStoryCache>();
             _clock = s.GetRequiredService<IServiceClock>();

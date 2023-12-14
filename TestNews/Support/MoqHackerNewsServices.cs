@@ -13,9 +13,10 @@ namespace TestNews.Support
 {
     internal class MoqHackerNewsService
     {
-        private IReadOnlyDictionary<int, HackerNewStory> IDToStory { get; set; }
-        private Mock<IHackerNewsService> MockedNewsService { get; set; }
+        private IReadOnlyDictionary<int, HackerNewStory> IDToStory { get; }
+        private Mock<IHackerNewsService> MockedNewsService { get; }
         private ConcurrentDictionary<int, int> _invocations = new ConcurrentDictionary<int, int>();
+        public IHackerNewsService Service => MockedNewsService.Object;
 
         public int GetInvocations(int id)
         {
@@ -25,16 +26,13 @@ namespace TestNews.Support
         public MoqHackerNewsService()
         {
             IDToStory = MockResponses.Stories.ToDictionary(s => s.Id);
-        }
-        public IHackerNewsService GetMockedHackerNewsWebService()
-        {
             MockedNewsService = new Mock<IHackerNewsService>();
             MockedNewsService.Setup(i => i.GetTopStories())
                 .ReturnsAsync(MockResponses.IDs)
                 .Callback(() =>
-            {
-                _invocations.AddOrUpdate(0, 1, (key, old) => old + 1);
-            });
+                {
+                    _invocations.AddOrUpdate(0, 1, (key, old) => old + 1);
+                });
             MockedNewsService.Setup(i => i.GetStory(It.IsAny<int>())).Returns<int>(i =>
             {
                 if (IDToStory.TryGetValue(i, out var story))
@@ -45,7 +43,6 @@ namespace TestNews.Support
 
                 throw new ArgumentOutOfRangeException($"id {i} unknown");
             });
-            return MockedNewsService.Object;
         }
     }
 }

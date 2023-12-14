@@ -22,7 +22,7 @@ namespace TestNews
         public void Init()
         {
             moqHackerNewsService = new MoqHackerNewsService();
-            _service = moqHackerNewsService.GetMockedHackerNewsWebService();
+            _service = moqHackerNewsService.Service;
         }
         [Test]
         public async Task Get_All_Stories()
