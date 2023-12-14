@@ -4,6 +4,13 @@ using System.Collections.Concurrent;
 
 namespace HackerTopNews.Services.Cache
 {
+    /*
+     * a cache with time expiry associated with each item placed in the cache such that
+     * once culled a new latest version is requested to replace the one ejected.  This allows
+     * for example a web service to be encapsulated such that many requests for same items
+     * over a window of time will yield cached versions preventing massive load placed on 
+     * a data source.
+     */
     internal abstract class AgedCache<K, V> where V : class
     {
         readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();

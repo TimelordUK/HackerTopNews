@@ -1,7 +1,5 @@
 ﻿using HackerTopNews.Model;
 using HackerTopNews.Services;
-using HackerTopNews.Services.Cache;
-using HackerTopNews.Services.Clock;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -29,9 +27,11 @@ namespace TestNews
         [TestCase(1,1)]
         [TestCase(0, 0)]
         [TestCase(-1, 0)]
+        [TestCase(int.MinValue, 0)]
         [TestCase(10, 10)]
         [TestCase(100, 100)]
         [TestCase(1000, 100)]
+        [TestCase(int.MaxValue, 100)]
         public async Task TestFetch(int n, int expected)
         {
             var res = await _rankedNewsService.GetTopScoring(n);
@@ -40,7 +40,7 @@ namespace TestNews
             CheckOrder(res);
         }
 
-        private void CheckOrder(IReadOnlyList<RankedNewsStory> rankedNewsStories)
+        private static void CheckOrder(IReadOnlyList<RankedNewsStory> rankedNewsStories)
         {
             for (var i = 1; i < rankedNewsStories.Count; ++i)
             {
