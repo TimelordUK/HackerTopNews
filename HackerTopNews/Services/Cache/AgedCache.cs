@@ -16,35 +16,29 @@ namespace HackerTopNews.Services.Cache
         readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
         public int Count => _cachedItems.Count;
         private IServiceClock _clock;
-        protected DateTime _lastCull;
+        protected DateTime _lastCull;W
         private object _lock = new object();
         private TimeSpan _itemLifeTime;
+        private int _cullFrequency;
         public TimeSpan ItemLifeTime => _itemLifeTime;  
-
-        protected AgedCache(IServiceClock clock, TimeSpan itemLifeTime)
-        {
-            _clock = clock;
-            _lastCull = _clock.CurrentTime;
-            _itemLifeTime = itemLifeTime;
-        }
 
         protected AgedCache(IServiceClock clock, IConfiguration configuration, string key)
         {
             _clock = clock;
             _lastCull = _clock.CurrentTime;
-            _itemLifeTime = GetExpire(configuration, key);
+            _itemLifeTime = TimeSpan.FromSeconds(GetConfig(configuration, key, 60));
+            _cullFrequency = GetConfig(configuration, "NewsCache:CullFrequency", 5);
         }
 
-        private static TimeSpan GetExpire(IConfiguration configuration, string key)
+        private static int GetConfig(IConfiguration configuration, string key, int def)
         {
-            const int def = 60;
             var v = configuration[key] ?? $"{def}";
             var s = int.TryParse(v, out var expireSecs) ? expireSecs : def;
-            return TimeSpan.FromSeconds(s);
+            return s;
         }
 
         public abstract Task<V> Get(K id);
-        public struct CachedItem
+        public readonly struct CachedItem
         {
             public DateTime StoredAt { get; }
             public V Item { get; }

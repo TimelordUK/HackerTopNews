@@ -32,7 +32,7 @@ namespace HackerTopNews.Services.Cache
 
         protected override void OnCulled(int items)
         {
-            _logger.LogInformation($"OnCulled lastcull = {_lastCull} culled cache items = {items} Count now = {Count}");
+            _logger.LogInformation($"NewsStoryCache.OnCulled itemLifeTime = {ItemLifeTime}, lastcull = {_lastCull}, culled cache items = {items}, Count = {Count}");
         }
     }
 }
