@@ -8,6 +8,9 @@ using TestNews.Support;
 
 namespace TestNews
 {
+    /*
+     * note this is using the real service wrapper to check API
+     */
     [TestFixture]
     public class HackerNewsServiceTest
     {

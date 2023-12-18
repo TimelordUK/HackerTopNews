@@ -3,11 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerTopNews", "HackerTopNews\HackerTopNews.csproj", "{26ACF9B6-07C3-4DE6-A7B0-33CA324DFDF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerTopNews", "HackerTopNews\HackerTopNews.csproj", "{26ACF9B6-07C3-4DE6-A7B0-33CA324DFDF2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20723BC5-AAFC-4602-ADED-A0F6C7F46A2D}"
+	ProjectSection(SolutionItems) = preProject
+		README = README
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNews", "TestNews\TestNews.csproj", "{80D610EF-8A25-48B0-9C66-DA02724BCE13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestNews", "TestNews\TestNews.csproj", "{80D610EF-8A25-48B0-9C66-DA02724BCE13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

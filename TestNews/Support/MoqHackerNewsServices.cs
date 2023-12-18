@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace TestNews.Support
 {
+    /*
+     * Mock Hacker News service returning actual data as collected from the Web  
+     */ 
     internal class MoqHackerNewsService
     {
         private IReadOnlyDictionary<int, HackerNewStory> IDToStory { get; }
@@ -33,13 +36,16 @@ namespace TestNews.Support
         {
             IDToStory = MockResponses.Stories.ToDictionary(s => s.Id);
             MockedNewsService = new Mock<IHackerNewsService>();
+            // fetch all
             MockedNewsService.Setup(i => i.GetTopStories())
                 .ReturnsAsync(MockResponses.IDs)
                 .Callback(() =>
                 {
                     _invocations.AddOrUpdate(0, 1, (key, old) => old + 1);
                 });
-            MockedNewsService.Setup(i => i.GetStory(It.IsAny<int>())).Returns<int>(i =>
+            // fetch a single story
+            MockedNewsService.Setup(i => i.GetStory(It.IsAny<int>()))
+                .Returns<int>(i =>
             {
                 if (IDToStory.TryGetValue(i, out var story))
                 {
@@ -52,3 +58,4 @@ namespace TestNews.Support
         }
     }
 }
+

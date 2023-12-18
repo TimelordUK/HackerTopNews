@@ -12,10 +12,13 @@ using TestNews.Support;
 
 namespace TestNews
 {
+    /*
+     * the main controller used to resolve all stories from top lost and order them by score and return the
+     * top N - only needs to forward calls to IScoreRankedNews
+     */
     [TestFixture]
     internal class RankedNewControllerTest
     {
-        private IHackerNewsService _service;
         private MoqHackerNewsService moqHackerNewsService;
         private HackerTopNewsController _controller;
 
@@ -24,19 +27,20 @@ namespace TestNews
         {
             var builder = TestAppBuilder.MakeWithMoqService(out moqHackerNewsService);
             var s = builder.Build().Services;
-            _service = s.GetRequiredService<IHackerNewsService>();
             var logger = s.GetRequiredService<ILogger<HackerTopNewsController>>();
             var ranked = s.GetRequiredService<IScoreRankedNews>();
             _controller = new HackerTopNewsController(logger, ranked);
         }
 
         [Test]
-        [TestCase(10)]
-        public async Task Fetch_Ranked_News_Controller_Test(int items)
+        [TestCase(10, 10)]
+        [TestCase(-1, 0)]
+        [TestCase(int.MaxValue, 100)]
+        public async Task Fetch_Ranked_News_Controller_Test(int items, int expected)
         {
             var res = await _controller.GetTopScoring(items);
             Assert.IsNotNull(res);
-            Assert.That(res.Count, Is.EqualTo(items));  
+            Assert.That(res.Count, Is.EqualTo(expected));  
         }
 
         [Test]

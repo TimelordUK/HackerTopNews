@@ -2,6 +2,9 @@
 
 namespace HackerTopNews.Model
 {
+    /*
+     * these entries are returned as JSON to the caller of this app service
+     */
     public class RankedNewsStory
     {
         public RankedNewsStory(HackerNewStory hackerNewStory)

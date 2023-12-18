@@ -11,7 +11,7 @@ using TestNews.Support;
 namespace TestNews
 {
     /*
-     * Test the mocked news service to enusure it behvaes as if we are calling the web version
+     * Test the mocked news service to enusure it behaves as if we are calling the web version
      * note data used is first 100 reords of a given invocatoin from to real feel so mocked
      * will be interchanchable.
      */

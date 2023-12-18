@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HackerTopNews.Controllers
 {
+    /*
+     * wrapper over the Hacker API with a cache in place such that repeated calls are not made to the web service.
+     */ 
     [ApiController]
     [Route("[controller]")]
     public class HackerApiController : ControllerBase

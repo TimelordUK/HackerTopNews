@@ -16,7 +16,7 @@ namespace HackerTopNews.Services.Cache
         readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
         public int Count => _cachedItems.Count;
         private IServiceClock _clock;
-        protected DateTime _lastCull;W
+        protected DateTime _lastCull;
         private object _lock = new object();
         private TimeSpan _itemLifeTime;
         private int _cullFrequency;

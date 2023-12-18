@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace TestNews.Support
 {
+    /*
+     * use the test clock allowing time to be set for cache expiry and optionally use
+     * the mock web service for fetching hacker stories.
+     */ 
     internal static class TestAppBuilder
     {
         public static WebApplicationBuilder Make()

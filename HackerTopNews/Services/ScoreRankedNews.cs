@@ -6,6 +6,11 @@ using System.Diagnostics;
 
 namespace HackerTopNews.Services
 {
+    /*
+     * The main service using the two underlying caches which will expire based on timings set in the 
+     * json thus limiting the number of calls made to the actual web service - this service does
+     * not need to be aware of any details, it simply queries the cache.
+     */ 
     public class ScoreRankedNews : IScoreRankedNews
     {
         private readonly ILogger<ScoreRankedNews> _logger;
@@ -25,7 +30,7 @@ namespace HackerTopNews.Services
             sw.Start();
             n = Math.Max(n, 0);
             var all = await _topStoryCache.Get();
-            _logger.LogInformation($"GetTopScoring [{n}] topStoryCache returns {all.Count} results");
+            _logger.LogInformation($"ScoreRankedNews.GetTopScoring [{n}] topStoryCache returns {all.Count} results");
             var inflateTasks = all.Select(_newStoryCache.Get).ToList();
             var stories = await Task.WhenAll(inflateTasks);
             var asList = stories.ToList();
@@ -34,7 +39,7 @@ namespace HackerTopNews.Services
             var toTake = Math.Min(asList.Count, n);
             var rawStories = asList.Slice(0, toTake);
             sw.Stop();
-            _logger.LogInformation($"GetTopScoring [{n}] elapsedMs = {sw.Elapsed.TotalMilliseconds}, scores = {string.Join(",", rawStories.Select(s => s.Score))}");
+            _logger.LogInformation($"ScoreRankedNews.GetTopScoring [{n}] elapsedMs = {sw.Elapsed.TotalMilliseconds}, scores = {string.Join(",", rawStories.Select(s => s.Score))}");
             // map results to a type used for the waiting controller
             var res = rawStories.Select(r => new RankedNewsStory(r)).ToList();
             return res;

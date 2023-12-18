@@ -11,6 +11,11 @@ using HackerTopNews.Services.Clock;
 
 namespace TestNews
 {
+    /*
+     * test the aged expiring cache for news stories which along with the test clock and mocked
+     * service can be used how many times the web service is invoked based on age of the story
+     * withing the cache.
+     */ 
     [TestFixture]
     internal class NewStoryCacheTest
     {

@@ -5,6 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HackerTopNews.Controllers
 {
+    /*
+     * The main web service used to fetch top N ranked stories via a cache which is connected to the 
+     * web service.  All top stories are resolved and placed in another cache where new entries will be added
+     * and old ones will expire over time.
+     */ 
+     
     [ApiController]
     [Route("[controller]")]
     public class HackerTopNewsController : ControllerBase
