@@ -156,9 +156,34 @@ Note that the cache used within this application can be configures with settting
   This is main service making use of above to resolve the top N ranked by score stories based on RankedNewsStory definition shown 
   below.  Note this service is using the above described caches and hence is not aware from where the data is being sourced
   - if the execute button is pressed, after the expiry period the rankings are re-resolved and re-ordered.
-
+  enter say 2 into parameter for top 2 news stories from Swagger and hit Execute.  Press execute repeatedly
+  
   GET
   /HackerTopNews/{n}
+
+  we expect JSON such as the following
+
+
+  ```json
+  [
+  {
+    "title": "Database Fundamentals",
+    "uri": "https://tontinton.com/posts/database-fundementals/",
+    "postedBy": "tontinton",
+    "time": "2023-12-15T15:28:30",
+    "score": 735,
+    "commentCount": 29
+  },
+  {
+    "title": "Mitchell reflects as he departs HashiCorp",
+    "uri": "https://www.hashicorp.com/blog/mitchell-reflects-as-he-departs-hashicorp",
+    "postedBy": "manojlds",
+    "time": "2023-12-14T21:27:17",
+    "score": 716,
+    "commentCount": 39
+  }
+]
+  ```
 
 
 ```cs
