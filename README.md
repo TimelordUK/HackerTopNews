@@ -7,6 +7,8 @@ Hacker news URL https://hacker-news.firebaseio.com/v0.  The top ID list is resol
 all stories returned within the ID list.  These fetches are cached to prevent overloading the
 Hacker data source. 
 
+Note the author is an experienced C# server developer but not in ASP Net
+
 ## Assumptions
 
 It has been assumed that the kids returned from a given story
