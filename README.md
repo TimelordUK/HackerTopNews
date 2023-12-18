@@ -90,7 +90,7 @@ Note that the cache used within this application can be configured with settting
     "TopNewsExpireSeconds": 20,
     "NewsStoryExpireSeconds": 80,
     "CullFrequency": 5
-  }#
+  }
 ```
 
   The first call made when resolving top ranked score stories is to fetch the list of IDs.  This cache
