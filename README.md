@@ -185,3 +185,7 @@ Note that the cache used within this application can be configures with settting
   There are some unit tests which can be run, these include a test time service so the time
   can be eplicitely set rather than using system time.  There is also a Moq using real life
   data of the Hacker API.  This is done with DI, see TestNews/Support/TestAppBuilder.
+
+  ## Test coverage
+
+  Using R# (which was only used for this purpose), coverage stats show ~80% coverage of the application
