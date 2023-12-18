@@ -25,6 +25,7 @@ namespace HackerTopNews.Controllers
         [HttpGet(Name = "GetAll")]
         public Task<IReadOnlyList<int>> Get()
         {
+            _logger.LogInformation($"Get all ids");
             return _topStoryCache.Get();
         }
 
