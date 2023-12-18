@@ -201,12 +201,12 @@ Note that the cache used within this application can be configured with settting
   | name  | summary  |
   |---|---|
   | AppBuilder          | set up the DI container with services for this application  |
-  | abstract AgedCache            |  used to cache ID fetches and stories based on an expiry time |
-  | ScoreRankedNews      |  to resolve and compute top N stories by score |
+  | AgedCache            | abstract class used to cache and expire items which when not present are asynchrnously resolved |
   | HackerTopNewsController  |  the entry REST point for resolving stories |
   | HackerNewsWebService  |  service used to fetch from HackerNews API. Note root url in config |
   | TopStoryCache  |  aged cache of all IDs of top stories |
   | NewsStoryCache  |  aged cache indexed by ID of story |
+   | ScoreRankedNews      | resolve and compute top N stories by score making use of caches |
 
    
   
