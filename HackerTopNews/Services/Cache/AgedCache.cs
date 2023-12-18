@@ -26,16 +26,10 @@ namespace HackerTopNews.Services.Cache
         {
             _clock = clock;
             _lastCull = _clock.CurrentTime;
-            _itemLifeTime = TimeSpan.FromSeconds(GetConfig(configuration, key, 60));
-            _cullFrequency = GetConfig(configuration, "NewsCache:CullFrequency", 5);
+            _itemLifeTime = TimeSpan.FromSeconds(configuration.GetAsInt32(key, 60));
+            _cullFrequency = configuration.GetAsInt32("NewsCache:CullFrequency", 5);
         }
 
-        private static int GetConfig(IConfiguration configuration, string key, int def)
-        {
-            var v = configuration[key] ?? $"{def}";
-            var s = int.TryParse(v, out var expireSecs) ? expireSecs : def;
-            return s;
-        }
 
         public abstract Task<V> Get(K id);
         public readonly struct CachedItem

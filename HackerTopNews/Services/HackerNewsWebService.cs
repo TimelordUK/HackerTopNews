@@ -9,17 +9,21 @@ using Microsoft.Extensions.Logging;
 
 public class HackerNewsWebService : IHackerNewsService
 {
-    private static readonly string RootUrl = "https://hacker-news.firebaseio.com/v0";
-    private static readonly string GetTopStoriesUrl = $"{RootUrl}/beststories.json";
+    private readonly string _rootUrl;
+    private readonly string _getTopStoriesUrl;
     private readonly HttpClient _httpClient;
     private static readonly JsonSerializerOptions IgnoreCase = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     private readonly ILogger<HackerNewsWebService> _logger;
     private readonly ConcurrentDictionary<string, Task<HttpResponseMessage>> _responses = new ConcurrentDictionary<string, Task<HttpResponseMessage>>();
+    private readonly string _withPretty = "?print=pretty";
 
-    public HackerNewsWebService(ILogger<HackerNewsWebService> logger, HttpClient httpClient)
+    public HackerNewsWebService(ILogger<HackerNewsWebService> logger, IConfiguration configuration, HttpClient httpClient)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _rootUrl = configuration.GetAsString("HackerApi:Url", "https://hacker-news.firebaseio.com/v0");
+        _getTopStoriesUrl = $"{_rootUrl}/beststories.json";
+        _logger.LogInformation($"rootUrl = {_rootUrl}, getTopStoriesUrl = {_getTopStoriesUrl}");
     }
 
     // do not have more than one outstanding request out on the same URL
@@ -41,7 +45,7 @@ public class HackerNewsWebService : IHackerNewsService
     {
         try
         {
-            string url = $"{RootUrl}/item/{id}.json?print=pretty";
+            string url = $"{_rootUrl}/item/{id}.json{_withPretty}";
             string jsonString = await GetJson(url);
             if (jsonString != null)
             {
@@ -65,8 +69,8 @@ public class HackerNewsWebService : IHackerNewsService
     {
         try
         {
-            _logger.LogInformation($"GetTopStoryID [{GetTopStoriesUrl}]");
-            var url = $"{GetTopStoriesUrl}?print=pretty";
+            _logger.LogInformation($"GetTopStoryID [{_getTopStoriesUrl}]");
+            var url = $"{_getTopStoriesUrl}{_withPretty}";
             var jsonString = await GetJson(url);
             if (jsonString != null)
             {
