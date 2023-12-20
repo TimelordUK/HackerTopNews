@@ -13,13 +13,13 @@ namespace HackerTopNews.Services.Cache
      */
     internal abstract class AgedCache<K, V> where V : class
     {
-        readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
+        private readonly ConcurrentDictionary<K, CachedItem> _cachedItems = new();
         public int Count => _cachedItems.Count;
-        private IServiceClock _clock;
+        private readonly IServiceClock _clock;
         protected DateTime _lastCull;
-        private object _lock = new object();
-        private TimeSpan _itemLifeTime;
-        private int _cullFrequency;
+        private readonly object _lock = new object();
+        private readonly TimeSpan _itemLifeTime;
+        private readonly int _cullFrequency;
         public TimeSpan ItemLifeTime => _itemLifeTime;  
 
         protected AgedCache(IServiceClock clock, IConfiguration configuration, string key)
@@ -32,11 +32,11 @@ namespace HackerTopNews.Services.Cache
 
 
         public abstract Task<V> Get(K id);
-        public readonly struct CachedItem
+        private readonly struct CachedItem
         {
-            public DateTime StoredAt { get; }
-            public V Item { get; }
-            public CachedItem(V item, DateTime storedAt)
+            private DateTime StoredAt { get; }
+            public Task<V> Item { get; }
+            public CachedItem(Task<V> item, DateTime storedAt)
             {
                 Item = item;
                 StoredAt = storedAt;
@@ -55,7 +55,8 @@ namespace HackerTopNews.Services.Cache
         {
             lock (_lock)
             {
-                if (_clock.CurrentTime - _lastCull < TimeSpan.FromSeconds(_itemLifeTime.Seconds / 4)) return;
+                var secs = _itemLifeTime.Seconds / _cullFrequency;
+                if (_clock.CurrentTime - _lastCull < TimeSpan.FromSeconds(secs)) return;
                 var expired = _cachedItems.Where(kv => kv.Value.IsExpired(_clock, _itemLifeTime)).ToList();
                 foreach (var item in expired)
                 {
@@ -71,16 +72,17 @@ namespace HackerTopNews.Services.Cache
 
         protected abstract void OnCulled(int items);
 
-        public async Task<V> GetOrAdd(K key, Func<K, Task<V>> maker)
+        public Task<V> GetOrAdd(K key, Func<K, Task<V>> maker)
         {
             Cull();
-            if (!_cachedItems.TryGetValue(key, out var cachedItem))
+            var cached = _cachedItems.GetOrAdd(key, _ =>
             {
-                var v = await maker(key);
-                cachedItem = new CachedItem(v, _clock.CurrentTime);
-                _cachedItems[key] = cachedItem;
-            }
-            return cachedItem.Item;
+                var v = maker(key);
+                return new CachedItem(v, _clock.CurrentTime);
+
+            });
+            
+            return cached.Item;
         }
     }
 }
