@@ -4,19 +4,18 @@
 
 This applicatiuon when launched can be used to fetch the TOP N ranked news stories using the 
 Hacker news URL https://hacker-news.firebaseio.com/v0.  The top ID list is resolved along with
-all stories returned within the ID list.  These fetches are cached to prevent overloading the
-Hacker data source. 
+all stories returned within that list. These fetches are cached to prevent overloading the Hacker data source. 
 
-Note the author is an experienced C# server developer but not in ASP Net
+Note the author is an experienced C# server developer but not in ASP Net.
 
 ## Assumptions
 
 It has been assumed that the kids returned from a given story
-are all comments, not filter is applied which would require recursively resolving the graph.
+are all comments, no filter is applied which would require recursively resolving the graph to resolve type.
 
 ### Effort 
 There has been around 20-25 hrs of development time to build this applicaton. It was based on the skeleton VS core ASP
-service using VS2022
+service using VS2022.
 
 ## Running
 Once built, should be possible to launch in usual way (e.g. F5) from Visual Studio - A console is expected hosting the
@@ -84,19 +83,19 @@ info: HackerNewsWebService[0]
 ```
 
 ## Cache
-Note that the cache used within this application can be configures with setttings in appsettings.json
+Note that the cache used within this application can be configured with setttings in appsettings.json
 
 ```json
   "NewsCache": {
     "TopNewsExpireSeconds": 20,
     "NewsStoryExpireSeconds": 80,
     "CullFrequency": 5
-  }#
+  }
 ```
 
   The first call made when resolving top ranked score stories is to fetch the list of IDs.  This cache
   is currently configured to expire at a faster rate than the stories resolved from it.  Hence new IDs will be
-  resolved and added into the story cache which expires at 4 x age by default. Over time old stories will
+  resolved and added into the story cache which expires at 4 x age by default. Over time, old stories will
   expire and at all times all stories making up the top score will be cached however some may be out of date
   until they also expire and are re-fetched.
 
@@ -108,13 +107,13 @@ Note that the cache used within this application can be configures with settting
   a very simple cache implementation is used AgedCache see Services/Cache
 
 # REST APIS
-  There are 2 REST apis
+  There are 2 REST each of which is described below.
 
   ## HackerApi
 
   This is a simple wrapper around the Hacker API returning the raw data as returned by their API - this allows 
   the service to be visualised.  Note that the service is also using the cache so repeatedly pressing the Swagger
-  Execute button will fetch caches results and eventually go back and fetch from Hacker API.
+  Execute button will fetch cached results.  Eventually the service goes back to fetch again from Hacker API.
 
   The first top call returns a JSON list of IDs, one of these can be copied onto the second call which takes that
   ID and returns the story it belongs too.  Note that theses stories are all cached based on json settings.
@@ -153,13 +152,37 @@ Note that the cache used within this application can be configures with settting
 
   ## HackerTopNews
 
-  This is main service making use of above to resolve the top N ranked by score stories based on RankedNewsStory definition shown 
+  This is main service making use of the above service to resolve the top N ranked by score stories based on RankedNewsStory definition shown 
   below.  Note this service is using the above described caches and hence is not aware from where the data is being sourced
   - if the execute button is pressed, after the expiry period the rankings are re-resolved and re-ordered.
-
+  enter say 2 into parameter for top 2 news stories from Swagger and hit Execute.  Press execute repeatedly
+  
   GET
   /HackerTopNews/{n}
 
+  we expect JSON such as the following
+
+
+  ```json
+  [
+  {
+    "title": "Database Fundamentals",
+    "uri": "https://tontinton.com/posts/database-fundementals/",
+    "postedBy": "tontinton",
+    "time": "2023-12-15T15:28:30",
+    "score": 735,
+    "commentCount": 29
+  },
+  {
+    "title": "Mitchell reflects as he departs HashiCorp",
+    "uri": "https://www.hashicorp.com/blog/mitchell-reflects-as-he-departs-hashicorp",
+    "postedBy": "manojlds",
+    "time": "2023-12-14T21:27:17",
+    "score": 716,
+    "commentCount": 39
+  }
+]
+  ```
 
 ```cs
     public class RankedNewsStory
@@ -173,14 +196,19 @@ Note that the cache used within this application can be configures with settting
     }
 ```
 
-  ## Main classes of Note
+  ## Main C# Classes of Note
 
   | name  | summary  |
   |---|---|
   | AppBuilder          | set up the DI container with services for this application  |
-  | AgedCache            |  used to cache ID fetches and stories based on an expiry time |
-  | ScoreRankedNews      |  to resolve and compute top N stories by score |
+  | AgedCache            | abstract class used to cache and expire items which when not present are asynchrnously resolved |
   | HackerTopNewsController  |  the entry REST point for resolving stories |
+  | HackerNewsWebService  |  service used to fetch from HackerNews API. Note root url in config |
+  | TopStoryCache  |  aged cache of all IDs of top stories |
+  | NewsStoryCache  |  aged cache indexed by ID of story |
+   | ScoreRankedNews      | resolve and compute top N stories by score making use of caches |
+
+   
   
   ## Unit Tests
    
